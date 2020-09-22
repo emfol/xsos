@@ -39,7 +39,7 @@ function winner(state) {
   const s = state & 0x7ffff;
   const sels = s & 0x1ff;
   const syms = (s >>> 9) & 0x1ff;
-  const patterns = [0x007, 0x038, 0x1c0, 0x049, 0x092, 0x124, 0x111, 0x054];
+  const patterns = [0x007, 0x038, 0x049, 0x054, 0x092, 0x111, 0x124, 0x1c0];
   for (let i = patterns.length - 1; i >= 0; --i) {
     const pattern = patterns[i];
     if ((sels & pattern) === pattern) {
@@ -72,7 +72,7 @@ function string(state) {
   const s = state & 0x7ffff;
   const sels = s & 0x1ff;
   const syms = (s >>> 9) & 0x1ff;
-  const wins = winner(state);
+  const wins = winner(s);
   for (let i = 0; i < 9; ++i) {
     if (((sels >>> i) & 1) === 1) {
       let sym = (((syms >>> i) & 1) === 1) ? 'x' : 'o';

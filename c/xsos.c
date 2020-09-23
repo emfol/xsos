@@ -33,11 +33,11 @@ unsigned int xsos_winner(unsigned int state) {
   const unsigned int s = state & 0x7ffff;
   const unsigned int sels = s & 0x1ff;
   const unsigned int syms = (s >> 9) & 0x1ff;
-  unsigned int i, winp, symp;
+  unsigned int i;
   for (i = 0; i < sizeof patterns / sizeof(int); ++i) {
-    winp = patterns[i];
+    const unsigned int winp = patterns[i];
     if ((sels & winp) == winp) {
-      symp = syms & winp;
+      const unsigned int symp = syms & winp;
       if (symp == winp || symp == 0) {
         return (winp & 0x1ff);
       }
@@ -56,10 +56,9 @@ char *xsos_string(unsigned int state, char *buffer) {
   const unsigned int syms = (state >> 9) & 0x1ff;
   const unsigned int wins = xsos_winner(s);
   unsigned int i;
-  char sym;
   for (i = 0; i < 9; ++i) {
     if (((sels >> i) & 1) == 1) {
-      sym = ((syms >> i) & 1) == 1 ? 'x' : 'o';
+      char sym = ((syms >> i) & 1) == 1 ? 'x' : 'o';
       if (((wins >> i) & 1) == 1) {
         sym = 'A' + (sym - 'a');
       }
@@ -74,11 +73,12 @@ char *xsos_string(unsigned int state, char *buffer) {
 
 char *xsos_grid_string(unsigned int state, char *buffer) {
   const unsigned int s = state & 0x7ffff;
-  unsigned int i, n;
-  char string[9 + 1], *p = buffer;
+  char *p = buffer;
+  char string[9 + 1];
+  unsigned int i;
   xsos_string(s, string);
   for (i = 0; i < 3; ++i) {
-    n = i * 3;
+    const unsigned int n = i * 3;
     *p++ = string[n + 0];
     *p++ = '|';
     *p++ = string[n + 1];
